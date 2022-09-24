@@ -34,7 +34,7 @@ class Chat extends Component {
         }
       }
       axios
-        .post('https://curvedanalytics.herokuapp.com/api/chatbotai', {'message':value}, config)
+        .post('https://www.curvedanalysis.com/api/chatbotai', {'message':value}, config)
         .then(res => {
           const currentUser='Friday'
           const respChat={user:currentUser, message:res.data,timestamp: +new Date}

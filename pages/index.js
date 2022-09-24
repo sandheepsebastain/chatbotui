@@ -4,11 +4,6 @@ import Chat from '../components/Chat';
 import axios from 'axios';
 
 class IndexPage extends Component {
-  static async getInitialProps() {
-    axios.get('https://curvedanalytics.herokuapp.com')
-    return {}
-  }
-
   state = { user: null }
   
   handleKeyUp = evt => {

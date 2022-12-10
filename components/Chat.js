@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import ChatMessage from './ChatMessage';
+import SendButton from '../components/SendButton';
 
 
 class Chat extends Component {
 
-  state = { chats: [{user:'Friday', message: 'Welcome! I am Friday. Really Nice to meet you', timestamp: +new Date}] }
+  state = { chats: [{user:'Friday', message: 'Welcome! I am Friday. Really Nice to meet you', timestamp: +new Date}],
+            inputText:null
+          }
   componentDidMount() {
     this.scrollToBottom();
   }
@@ -18,15 +21,13 @@ class Chat extends Component {
     this.el.scrollIntoView({ behavior: 'smooth' });
   }
 
-  handleKeyUp = evt => {
-    const value = evt.target.value;
-    if (evt.keyCode === 13 && !evt.shiftKey) {
-      const { activeUser: user } = this.props;
+  postMessage=(value)=>{
+    const { activeUser: user } = this.props;
       const chat = { user, message: value, timestamp: +new Date };
-      evt.target.value = '';
-      const { chats } = this.state;
+      
+      const chats= this.state.chats;
       chat && chats.push(chat);
-      this.setState({ chats });
+      this.setState({ chats:chats });
       const config = {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
@@ -39,16 +40,36 @@ class Chat extends Component {
           const currentUser='Friday'
           const respChat={user:currentUser, message:res.data,timestamp: +new Date}
           chats.push(respChat)
-          this.setState({ chats });
+          this.setState({ chats:chats });
         })
         .catch(err => {
           console.log('error in request', err);
         });
 
 
+  }
+
+  handleKeyUp = evt => {
+    const value = evt.target.value;
+    if (evt.keyCode === 13 && !evt.shiftKey) {
+      
+      this.postMessage(value);
+      this.setState({inputText: null });
+      evt.target.value='';
       
     }
   }
+
+  handleOnChange = evt => {
+    const inputText =  evt.target.value;
+    this.setState({inputText: inputText });
+}
+
+clickHandler = () => {
+  const value =  this.state.inputText;
+  this.postMessage(value);
+    this.setState({inputText: '' });
+}
 
   render() {
     return (this.props.activeUser && <Fragment>
@@ -82,7 +103,10 @@ class Chat extends Component {
         })}
       </div>
       <div className="border-top border-gray w-100 px-4 d-flex align-items-center bg-light" style={{ minHeight: 90 }}>
-        <textarea className="form-control px-3 py-2" onKeyUp={this.handleKeyUp} placeholder="Enter a chat message" style={{ resize: 'none' }}></textarea>
+        <textarea className="form-control px-3 py-2" value = {this.state.inputText} onKeyUp={this.handleKeyUp} onChange={this.handleOnChange} placeholder="Enter a chat message" style={{ resize: 'none' }}></textarea>
+        <span className="px-2 py-2">
+          <SendButton bgColor={"transparent"} Color={"grey"} hoverColor={"black"} fontSize={"2vw"} onClick={this.clickHandler}/>
+        </span>
       </div>
     </Fragment> )
   }

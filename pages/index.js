@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
 import Layout from '../components/Layout';
 import Chat from '../components/Chat';
+import SendButton from '../components/SendButton';
 import axios from 'axios';
 
 class IndexPage extends Component {
-  state = { user: null }
+  state = { user: null, inputText:null }
   
   handleKeyUp = evt => {
     if (evt.keyCode === 13) {
       const user =  evt.target.value;
-      this.setState({ user });
+      this.setState({user: user });
     }
+  }
+
+  handleOnChange = evt => {
+      const inputText =  evt.target.value;
+      this.setState({inputText: inputText });
+
+  }
+
+  clickHandler = () => {
+    const user =  this.state.inputText;
+      this.setState({user: user });
   }
   
   render() {
-    const { user } = this.state;
+    const user = this.state.user;
     
     const nameInputStyles = {
       background: 'transparent',
@@ -22,7 +34,7 @@ class IndexPage extends Component {
       border: 0,
       borderBottom: '1px solid #666',
       borderRadius: 0,
-      fontSize: '3rem',
+      fontSize: '4vw',
       fontWeight: 500,
       boxShadow: 'none !important'
     };
@@ -35,9 +47,9 @@ class IndexPage extends Component {
           <div className="row position-absolute w-100 h-100">
           
             <section className="col-md-8 d-flex flex-row flex-wrap align-items-center align-content-center px-5">
-              <div className="px-5 mx-5">
+              <div>
               
-                <span className="d-block w-100 h1 text-light" style={{marginTop: -50}}>
+                <span className="w-100 h1 text-light" style={{marginTop: -50,fontSize:"4vw"}}>
                   {
                     user
                       ? (<span>
@@ -47,14 +59,16 @@ class IndexPage extends Component {
                   }
                 </span>
                 
-                { !user && <input type="text" className="form-control mt-3 px-3 py-2" onKeyUp={this.handleKeyUp} autoComplete="off" style={nameInputStyles} /> }
+                { !user && <span className="d-flex  mt-3 px-3 py-2"><input type="text" className="form-control" onKeyUp={this.handleKeyUp} autoComplete="off" style={nameInputStyles} onChange={this.handleOnChange} />
+                          <span className="px-2 py-2"><SendButton bgColor={nameInputStyles.background} Color={nameInputStyles.color} hoverColor={"white"} fontSize={nameInputStyles.fontSize} onClick={this.clickHandler}/></span>
+                          </span> }
                 
               </div>
             </section>
             
-            <section className="col-md-4 position-relative d-flex flex-wrap h-100 align-items-start align-content-between bg-white px-0">
+            {user && <section className="col-md-4 position-relative d-flex flex-wrap h-100 align-items-start align-content-between bg-white px-0">
             { user && <Chat activeUser={user} /> }
-            </section>
+            </section>}
             
           </div>
           

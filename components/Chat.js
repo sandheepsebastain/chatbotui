@@ -6,6 +6,8 @@ import SendButton from '../components/SendButton';
 
 class Chat extends Component {
 
+  
+
   state = { chats: [{user:'Friday', message: 'Welcome! I am Friday. Really Nice to meet you', timestamp: +new Date}],
             inputText:null
           }
@@ -20,6 +22,8 @@ class Chat extends Component {
   scrollToBottom() {
     this.el.scrollIntoView({ behavior: 'smooth' });
   }
+
+
 
   postMessage=(value)=>{
     const { activeUser: user } = this.props;
@@ -105,7 +109,7 @@ clickHandler = () => {
       <div className="border-top border-gray w-100 px-4 d-flex align-items-center bg-light" style={{ minHeight: 90 }}>
         <textarea className="form-control px-3 py-2" value = {this.state.inputText} onKeyUp={this.handleKeyUp} onChange={this.handleOnChange} placeholder="Enter a chat message" style={{ resize: 'none' }}></textarea>
         <span className="px-2 py-2">
-          <SendButton bgColor={"transparent"} Color={"grey"} hoverColor={"black"} fontSize={"2vw"} onClick={this.clickHandler}/>
+          <SendButton bgColor={"transparent"} Color={"grey"} hoverColor={"black"} fontSize={"25px"} onClick={this.clickHandler}/>
         </span>
       </div>
     </Fragment> )

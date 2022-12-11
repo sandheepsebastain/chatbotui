@@ -1,10 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component,useRef, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Chat from '../components/Chat';
 import SendButton from '../components/SendButton';
 import axios from 'axios';
 
 class IndexPage extends Component {
+  constructor(props) {
+    super(props);
+    this.innerRef = React.createRef();
+  }
+  componentDidMount() {
+    // Add a timeout here
+
+      this.innerRef.current.focus();
+
+  }
+
   state = { user: null, inputText:null }
   
   handleKeyUp = evt => {
@@ -38,6 +49,7 @@ class IndexPage extends Component {
       fontWeight: 500,
       boxShadow: 'none !important'
     };
+
     
     return (
       <Layout pageTitle="AI Conversation">
@@ -59,7 +71,7 @@ class IndexPage extends Component {
                   }
                 </span>
                 
-                { !user && <span className="d-flex  mt-3 px-3 py-2"><input type="text" className="form-control" onKeyUp={this.handleKeyUp} autoComplete="off" style={nameInputStyles} onChange={this.handleOnChange} />
+                { !user && <span className="d-flex  mt-3 px-3 py-2"><input  ref={this.innerRef} type="text" className="form-control" onKeyUp={this.handleKeyUp} autoComplete="off" style={nameInputStyles} onChange={this.handleOnChange}/>
                           <span className="px-2 py-2"><SendButton bgColor={nameInputStyles.background} Color={nameInputStyles.color} hoverColor={"white"} fontSize={nameInputStyles.fontSize} onClick={this.clickHandler}/></span>
                           </span> }
                 
